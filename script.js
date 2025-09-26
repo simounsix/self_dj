@@ -22,6 +22,7 @@ const jingleTxt= jingleEl?.textContent ?? "";
 /* Lancer les effets: titre puis jingle */
 (async () => {
   await typeText(titleEl,  titleTxt, 120);
+  jingleEl.style.visibility = 'visible';
   await typeText(jingleEl, jingleTxt, 90);
 })();
 

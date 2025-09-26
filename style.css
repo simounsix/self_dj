@@ -8,12 +8,11 @@
 }
 
 /* Base */
-:root { --violet:#6a0dad; }
 body {
   font-family: "tilt-neon", sans-serif;
   margin: 0;
   padding: 0;
-  background: linear-gradient(135deg, #0f0f0f, #1a0033, #4b0082);
+  background: linear-gradient(135deg, #0f0f0f, #1a0033, #4b0082) center/cover no-repeat fixed;
   color: #fff;
 }
 
@@ -45,6 +44,7 @@ body {
   text-align:center;
   font-style:italic;
   margin:.75rem 0 2rem;
+  visibility: hidden;
 }
 
 /* CAROUSEL */
