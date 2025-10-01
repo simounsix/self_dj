@@ -1,31 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  /* ---------------- TYPEWRITER ---------------- */
-  function typeText(el, text, speed = 120) {
-    return new Promise(resolve => {
-      if (!el) return resolve();
-      el.textContent = "";
-      let i = 0;
-      (function tick() {
-        el.textContent = text.slice(0, i);
-        i++;
-        if (i <= text.length) setTimeout(tick, speed);
-        else resolve();
-      })();
-    });
-  }
-
-  const titleEl  = document.getElementById('titre');
-  const jingleEl = document.getElementById('jingle');
-  const titleTxt = titleEl?.textContent ?? "";
-  const jingleTxt= jingleEl?.textContent ?? "";
-
-  (async () => {
-    await typeText(titleEl, titleTxt, 120);
-    jingleEl.style.visibility = 'visible';
-    await typeText(jingleEl, jingleTxt, 90);
-  })();
-
-  /* ---------------- CAROUSEL ---------------- */
   const slidesEl = document.querySelector('.slides');
   const slideEls = document.querySelectorAll('.slide');
   const prevBtn  = document.querySelector('.prev');
@@ -33,19 +6,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const dotsWrap = document.querySelector('.carousel-dots');
 
   let index = 0;
+  let autoTimer = null;
 
-  // Crée les dots dynamiquement
+  // création des dots
   const dots = [];
   slideEls.forEach((_, i) => {
     const dot = document.createElement('button');
     dot.className = 'dot';
-    dot.setAttribute('type', 'button');
+    dot.type = 'button';
     dot.dataset.index = i;
-
     dot.addEventListener('click', () => {
       showSlide(i);
+      stopAuto(); // stoppe si clic sur dot
     });
-
     dotsWrap.appendChild(dot);
     dots.push(dot);
   });
@@ -62,14 +35,33 @@ document.addEventListener('DOMContentLoaded', () => {
     updateDots(index);
   }
 
-  nextBtn?.addEventListener('click', () => showSlide(index + 1));
-  prevBtn?.addEventListener('click', () => showSlide(index - 1));
+  // auto défilement
+  function startAuto() {
+    autoTimer = setInterval(() => {
+      showSlide(index + 1);
+    }, 5000);
+  }
+  function stopAuto() {
+    clearInterval(autoTimer);
+    autoTimer = null;
+  }
 
-  // Init
-  showSlide(0);
-
-  // Auto (toutes les 5s)
-  setInterval(() => {
+  // flèches
+  nextBtn?.addEventListener('click', () => {
     showSlide(index + 1);
-  }, 5000);
+    stopAuto(); // stoppe si clic
+  });
+  prevBtn?.addEventListener('click', () => {
+    showSlide(index - 1);
+    stopAuto(); // stoppe si clic
+  });
+
+  // option : pause si survol
+  const carousel = document.querySelector('.carousel');
+  carousel.addEventListener('mouseenter', stopAuto);
+  carousel.addEventListener('mouseleave', startAuto);
+
+  // init
+  showSlide(0);
+  startAuto();
 });
