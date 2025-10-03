@@ -216,6 +216,8 @@ body {
   padding: 2rem 1rem 1rem;
   font-size: 0.95rem;
   width: 100%;
+  border-top: 3px solid #6a0dad;
+  box-shadow: 0 -2px 12px rgba(106, 13, 173, 0.7); /* glow */
 }
 
 .footer-container {
@@ -261,16 +263,64 @@ body {
   color: #888;
 }
 
-
-
-
-
-
-
-
-
-
-
 @media (prefers-reduced-motion: reduce){
   .slides { transition: none; }
 }
+
+/* Me retrouver */
+
+.reseaux {
+  max-width: 1100px;
+  margin: 3rem auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  padding: 0 1rem;
+}
+
+.reseau-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.reseau-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(106,13,173,0.7);
+}
+
+.reseau-card i {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #6a0dad;
+}
+
+.reseau-card h2 {
+  margin: 0.5rem 0;
+  color: #fff;
+}
+
+.reseau-card p {
+  font-size: 0.95rem;
+  color: #ddd;
+  margin-bottom: 1rem;
+}
+
+.reseau-card a {
+  display: inline-block;
+  padding: 0.6rem 1rem;
+  background: #6a0dad;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.reseau-card a:hover {
+  background: #8a2be2;
+  transform: scale(1.05);
+}
+
