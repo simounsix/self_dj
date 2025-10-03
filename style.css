@@ -363,3 +363,42 @@ body {
 }
 .event-actions a:hover{ background:#8a2be2; transform: translateY(-1px); }
 
+/* PRESENTATION */
+
+/* --- Timeline --- */
+.timeline{
+  max-width: 900px;
+  margin: 0 auto 2rem;
+  position: relative;
+  padding-left: 18px;
+}
+.timeline::before{
+  content:"";
+  position:absolute; left:8px; top:0; bottom:0;
+  width:2px; background: rgba(255,255,255,.18);
+}
+.t-item{ position: relative; margin: 0 0 1.2rem 0; }
+.t-dot{
+  position:absolute; left:-1px; top:.35rem;
+  width:12px; height:12px; border-radius:50%;
+  background:#6a0dad; box-shadow:0 0 10px rgba(106,13,173,.8);
+}
+.t-card{
+  background: rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:12px; padding:1rem 1.2rem;
+}
+.t-card h3{ margin:.1rem 0 .4rem; color:#fff; }
+
+/* --- Chips (setup) --- */
+.chips{
+  display:flex; flex-wrap:wrap; gap:.5rem; justify-content:center;
+}
+.chip{
+  background: rgba(106,13,173,.2);
+  color:#fff; border:1px solid rgba(255,255,255,.12);
+  padding:.45rem .7rem; border-radius:999px; font-size:.9rem;
+  display:inline-flex; align-items:center; gap:.4rem;
+}
+.chip i{ opacity:.9; }
+
