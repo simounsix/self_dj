@@ -1,4 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
+  /* ---------------- TYPEWRITER ---------------- */
+  function typeText(el, text, speed = 120) {
+    return new Promise(resolve => {
+      if (!el) return resolve();
+      el.textContent = "";
+      let i = 0;
+      (function tick() {
+        el.textContent = text.slice(0, i);
+        i++;
+        if (i <= text.length) setTimeout(tick, speed);
+        else resolve();
+      })();
+    });
+  }
+
+  const titleEl  = document.getElementById('titre');
+  const jingleEl = document.getElementById('jingle');
+  const titleTxt = titleEl?.textContent ?? "";
+  const jingleTxt= jingleEl?.textContent ?? "";
+
+  (async () => {
+    await typeText(titleEl, titleTxt, 120); // anime le titre
+    jingleEl.style.visibility = 'visible';
+    await typeText(jingleEl, jingleTxt, 90); // anime le jingle
+  })();
+
+  /* ---------------- CAROUSEL ---------------- */
   const slidesEl = document.querySelector('.slides');
   const slideEls = document.querySelectorAll('.slide');
   const prevBtn  = document.querySelector('.prev');
@@ -17,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     dot.dataset.index = i;
     dot.addEventListener('click', () => {
       showSlide(i);
-      stopAuto(); // stoppe si clic sur dot
+      stopAuto(); // stop si clic utilisateur
     });
     dotsWrap.appendChild(dot);
     dots.push(dot);
@@ -49,11 +76,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // flèches
   nextBtn?.addEventListener('click', () => {
     showSlide(index + 1);
-    stopAuto(); // stoppe si clic
+    stopAuto();
   });
   prevBtn?.addEventListener('click', () => {
     showSlide(index - 1);
-    stopAuto(); // stoppe si clic
+    stopAuto();
   });
 
   // option : pause si survol

@@ -122,6 +122,73 @@ body {
   background: #fff; /* rempli si actif */
 }
 
+.contenu {
+  max-width: 1100px;
+  margin: 4rem auto;
+  padding: 0 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 colonnes */
+  gap: 2rem; /* espace entre les blocs */
+}
+
+.titre-principal {
+  grid-column: 1 / -1; /* occupe toute la largeur */
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: var(--violet, #6a0dad);
+  text-shadow: 0 0 12px rgba(106,13,173,0.7);
+}
+
+.container {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column; /* image puis texte */
+  align-items: center;
+  text-align: center;
+}
+.container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(106,13,173,0.6);
+}
+
+.container img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.container h1 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.container p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #ddd;
+}
+
+.container.grand {
+  grid-column: 1 / -1; /* occupe de la 1ère à la dernière colonne */
+}
+
+
+
+
+
+
+
+
+
 @media (prefers-reduced-motion: reduce){
   .slides { transition: none; }
 }
