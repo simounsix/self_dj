@@ -16,7 +16,7 @@ function typeText(el, text, speed = 120) {
 // Conversions pour Google Calendar / .ics (UTC)
 const pad = n => String(n).padStart(2, "0");
 const toUTCStamp = d =>
-  `${d.getUTCFullYear()}${pad(d.getUTCMonth()+1)}${pad(d.getUTCDate())}` +
+  `${d.getUTCFullYear()}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())}` +
   `T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}00Z`;
 
 const frDateTime = d => d.toLocaleString("fr-FR", {
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ----- TYPEWRITER (titre + jingle si présents) -----
   (async () => {
-    const titleEl  = document.getElementById("titre");
+    const titleEl = document.getElementById("titre");
     const jingleEl = document.getElementById("jingle");
 
     if (titleEl) {
@@ -45,11 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // ----- CAROUSEL (seulement si présent) -----
-  (function initCarousel(){
+  (function initCarousel() {
     const slidesEl = document.querySelector(".slides");
     const slideEls = document.querySelectorAll(".slide");
-    const prevBtn  = document.querySelector(".prev");
-    const nextBtn  = document.querySelector(".next");
+    const prevBtn = document.querySelector(".prev");
+    const nextBtn = document.querySelector(".next");
     const dotsWrap = document.querySelector(".carousel-dots");
     if (!slidesEl || slideEls.length === 0) return;   // pas de carrousel sur cette page
 
@@ -75,18 +75,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const updateDots = i => dots.forEach((d, k) => d.classList.toggle("active", k === i));
 
     // Affichage
-    function showSlide(i){
+    function showSlide(i) {
       index = (i + slideEls.length) % slideEls.length;
       slidesEl.style.transform = `translateX(-${index * 100}%)`;
       updateDots(index);
     }
 
     // Auto
-    function startAuto(){
+    function startAuto() {
       stopAuto();
       autoTimer = setInterval(() => showSlide(index + 1), 5000);
     }
-    function stopAuto(){
+    function stopAuto() {
       if (autoTimer) clearInterval(autoTimer);
       autoTimer = null;
     }
@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // ----- AGENDA (style A) : seulement si .agenda-list existe -----
-  (function initAgenda(){
+  (function initAgenda() {
     const root = document.querySelector(".agenda-list");
     if (!root) return;
 
@@ -132,32 +132,32 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     // .ics (Apple/Outlook)
-    function buildICS(ev){
-      const start = new Date(`${ev.date}T${(ev.start||"00:00")}:00`);
-      const end   = ev.end ? new Date(`${ev.date}T${ev.end}:00`)
-                           : new Date(start.getTime()+2*3600e3);
+    function buildICS(ev) {
+      const start = new Date(`${ev.date}T${(ev.start || "00:00")}:00`);
+      const end = ev.end ? new Date(`${ev.date}T${ev.end}:00`)
+        : new Date(start.getTime() + 2 * 3600e3);
 
       const ics = [
-        "BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//SELF DJ//Agenda//FR","CALSCALE:GREGORIAN","METHOD:PUBLISH",
+        "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//SELF DJ//Agenda//FR", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
         "BEGIN:VEVENT",
-        `UID:${(crypto.randomUUID?.()||Date.now()+"@selfdj")}`,
+        `UID:${(crypto.randomUUID?.() || Date.now() + "@selfdj")}`,
         `DTSTAMP:${toUTCStamp(new Date())}`,
         `DTSTART:${toUTCStamp(start)}`,
         `DTEND:${toUTCStamp(end)}`,
         `SUMMARY:${ev.title}`,
         ev.venue ? `LOCATION:${ev.venue}` : "",
         ev.description ? `DESCRIPTION:${ev.description}` : "",
-        "END:VEVENT","END:VCALENDAR"
+        "END:VEVENT", "END:VCALENDAR"
       ].filter(Boolean).join("\r\n");
 
       return "data:text/calendar;charset=utf-8," + encodeURIComponent(ics);
     }
 
     // Lien "Ajouter à Google" (lieu + description propre)
-    function googleLink(ev){
-      const start = new Date(`${ev.date}T${(ev.start||"00:00")}:00`);
-      const end   = ev.end ? new Date(`${ev.date}T${ev.end}:00`)
-                           : new Date(start.getTime()+2*3600e3);
+    function googleLink(ev) {
+      const start = new Date(`${ev.date}T${(ev.start || "00:00")}:00`);
+      const end = ev.end ? new Date(`${ev.date}T${ev.end}:00`)
+        : new Date(start.getTime() + 2 * 3600e3);
 
       const desc = ev.description || "DJ set en club";
 
@@ -173,9 +173,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const now = new Date();
     const future = EVENTS
-      .map(e => ({...e, startDate: new Date(`${e.date}T${(e.start||"00:00")}:00`)}))
+      .map(e => ({ ...e, startDate: new Date(`${e.date}T${(e.start || "00:00")}:00`) }))
       .filter(e => e.startDate.getTime() >= now.getTime() - 3600e3) // garde futur (tolérance -1h)
-      .sort((a,b) => a.startDate - b.startDate);
+      .sort((a, b) => a.startDate - b.startDate);
 
     if (future.length === 0) {
       root.innerHTML = `<p style="text-align:center;color:#ddd;">Aucune date pour le moment. Reviens bientôt ✨</p>`;
@@ -191,7 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="event-meta">
           ${ev.venue ? `<span class="badge">${ev.venue}</span><br>` : ""}
           ${frDateTime(new Date(`${ev.date}T${ev.start}:00`))}
-          ${end ? " – " + end.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}) : ""}
+          ${end ? " – " + end.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : ""}
         </div>
         <div class="event-actions">
           <a href="${googleLink(ev)}" target="_blank" rel="noopener">Ajouter à Google</a>
@@ -217,4 +217,45 @@ document.addEventListener("DOMContentLoaded", () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
+  // ----- FORMULAIRE DE CONTACT -----
+  (function initContactForm() {
+    const form = document.getElementById("contact-form");
+    if (!form) return; // aucune action si pas de formulaire sur la page
+
+    const msg = form.querySelector(".form-msg");
+    const btn = form.querySelector("button");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      msg.textContent = "Envoi en cours...";
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { "Accept": "application/json" }
+        });
+        if (res.ok) {
+          msg.textContent = "✅ Merci ! Ton message a bien été envoyé 💜";
+          form.reset();
+        } else {
+          msg.textContent = "❌ Oups, une erreur est survenue. Réessaie plus tard.";
+        }
+      } catch (err) {
+        msg.textContent = "⚠️ Problème de connexion.";
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  })();
+  // effet d’apparition du formulaire au scroll
+  const contactSection = document.querySelector('.contact-section');
+  if (contactSection) {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) contactSection.classList.add('visible');
+    }, { threshold: 0.2 });
+    observer.observe(contactSection);
+  }
+
 });

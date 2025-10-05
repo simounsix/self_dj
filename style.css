@@ -402,3 +402,117 @@ body {
 }
 .chip i{ opacity:.9; }
 
+/* ============================= */
+/*         PAGE CONTACT          */
+/* ============================= */
+
+.contact-section {
+  max-width: 700px;
+  margin: 4rem auto;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.contact-section:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(106,13,173,0.6);
+}
+
+.contact-intro {
+  color: #ccc;
+  line-height: 1.6;
+  font-size: 1.05rem;
+  margin-bottom: 2rem;
+}
+
+/* ----- FORMULAIRE ----- */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.form-group label {
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 0.4rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.3);
+  color: #fff;
+  font-family: "tilt-neon", sans-serif;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #6a0dad;
+  box-shadow: 0 0 6px rgba(106,13,173,0.6);
+}
+
+/* ----- BOUTON ----- */
+.btn-send {
+  background: linear-gradient(135deg, #6a0dad, #8a2be2);
+  border: none;
+  color: #fff;
+  padding: 0.9rem 1.4rem;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.3s;
+  width: fit-content;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 0 10px rgba(106,13,173,0.6);
+}
+.btn-send:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 18px rgba(138,43,226,0.9);
+}
+.btn-send:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ----- MESSAGE DE VALIDATION / ERREUR ----- */
+.form-msg {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #ddd;
+  min-height: 1.2em;
+}
+
+/* Apparition douce (option bonus du JS) */
+.contact-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.contact-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
