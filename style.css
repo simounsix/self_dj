@@ -244,13 +244,6 @@ body {
     justify-self: center;
     max-width: 860px;
   }
-
-  /* Si la DERNIÈRE carte est seule (nombre impair) et n'est pas .grand → la centrer */
-  .contenu > .container:last-child:nth-child(odd):not(.grand){
-    grid-column: 1 / -1;
-    justify-self: center;
-    max-width: 420px;
-  }
 }
 
 /* Palier 1 colonne (mobile) */
