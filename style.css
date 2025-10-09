@@ -1,5 +1,7 @@
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 @font-face {
@@ -176,7 +178,7 @@ body {
 }
 
 .container p {
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1.6;
   color: #ddd;
 }
