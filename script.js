@@ -114,20 +114,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // 🔧 ÉDITE ICI TES ÉVÉNEMENTS (clubs/bars uniquement)
     const EVENTS = [
       {
-        title: "SELF DJ – Hard Techno Night",
-        date: "2025-10-18",
-        start: "21:00", end: "23:30",
-        venue: "Le Warehouse, Paris",
-        description: "Soirée hard techno. Dress code libre.",
-        tickets: "https://billetterie.exemple.com/event/123" // optionnel
+
       },
       {
-        title: "SELF DJ – Metz Club Session",
-        date: "2025-11-07",
-        start: "22:00", end: "01:00",
-        venue: "Le Truc, Metz",
-        description: "Set 161 BPM – hardbounce/techno.",
-        // tickets: ""
       }
     ];
 

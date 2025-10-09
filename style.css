@@ -1,8 +1,17 @@
+/* ================================
+   RESET & BASE
+================================== */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
   width: 100%;
+  overflow-x: hidden; /* évite le scroll horizontal */
 }
+
+img { max-width: 100%; height: auto; display: block; }
 
 @font-face {
   font-family: "tilt-neon";
@@ -14,6 +23,12 @@ html {
 
 :root {
   --carousel-height: 60vh;
+  --violet: #6a0dad;
+  --violet-2: #8a2be2;
+  --text: #fff;
+  --text-dim: #ddd;
+  --card-bg: rgba(255,255,255,0.05);
+  --card-bd: rgba(255,255,255,0.1);
 }
 
 body {
@@ -21,10 +36,12 @@ body {
   margin: 0;
   padding: 0;
   background: linear-gradient(135deg, #0f0f0f, #1a0033, #4b0082) center/cover no-repeat fixed;
-  color: #fff;
+  color: var(--text);
 }
 
-/* NAVBAR */
+/* ================================
+   NAVBAR
+================================== */
 .navbar {
   background:#333;
   overflow:hidden;
@@ -36,10 +53,11 @@ body {
   padding:0;
   display:flex;
   justify-content:space-between;
-  gap:2rem;
+  gap:1rem;
+  flex-wrap: wrap;           /* autorise le retour à la ligne */
 }
 .navbar ul li {
-  flex:1;
+  flex: 1 1 180px;           /* largeur mini par item */
   text-align:center;
   font-size:20px;
 }
@@ -50,12 +68,14 @@ body {
   display:inline-block;
   transition:transform .2s;
 }
-.navbar ul li a:hover { transform:scale(1.2); }
+.navbar ul li a:hover { transform:scale(1.1); }
 .navbar ul li a.active { opacity:.55; }
 .navbar ul li a.active:hover { transform:none; }
 .navbar ul li a i { margin-right: 5px; }
 
-/* Titres */
+/* ================================
+   TITRES
+================================== */
 .titre{
   font-size: clamp(2rem, 6vw, 3.5rem);
   font-weight:800;
@@ -69,7 +89,9 @@ body {
   visibility: hidden;
 }
 
-/* CAROUSEL */
+/* ================================
+   CAROUSEL
+================================== */
 .carousel {
   position: relative;
   width: 100%;
@@ -80,9 +102,7 @@ body {
   display: flex;
   transition: transform 0.5s ease;
 }
-.slide {
-  flex: 0 0 100%;
-}
+.slide { flex: 0 0 100%; }
 .slide img {
   width: 100%;
   height: var(--carousel-height);
@@ -124,37 +144,57 @@ body {
   cursor: pointer;
   transition: background 0.3s;
 }
-.dot.active {
-  background: #fff; /* rempli si actif */
+.dot.active { background: #fff; }
+
+@media (max-width: 900px) {
+  :root { --carousel-height: 45vh; }
+}
+@media (max-width: 600px) {
+  :root { --carousel-height: 32vh; }
+  .prev, .next { font-size: 1.4rem; padding: .4rem .7rem; }
 }
 
+@media (prefers-reduced-motion: reduce){
+  .slides { transition: none; }
+}
+
+/* ================================
+   SECTION "SELF C'EST QUOI ?"
+================================== */
 .contenu {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 4rem auto;
   padding: 0 1rem;
   display: grid;
-  grid-template-columns: 1fr 1fr; /* 2 colonnes */
-  gap: 2rem; /* espace entre les blocs */
-}
+  grid-template-columns: repeat(auto-fill, minmax(320px, 420px));
+  gap: 2rem;
 
+  /* centrage de la grille dans le conteneur */
+  place-content: center;
+  justify-content: center;
+}
 .titre-principal {
-  grid-column: 1 / -1; /* occupe toute la largeur */
+  grid-column: 1 / -1;
   text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
-  color: var(--white, #fff);
+  font-size: clamp(1.8rem, 2.4vw, 2.8rem);
+  margin-bottom: 1.4rem;
+  color: var(--text);
   text-shadow: 0 0 12px rgba(106,13,173,0.7);
 }
 
+/* Cartes */
 .container {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
+  min-width: 0;
+  width: 100%;
+  max-width: 420px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-bd);
   border-radius: 12px;
-  padding: 2rem;
+  padding: clamp(1.2rem, 2vw, 2rem);
   box-shadow: 0 8px 20px rgba(0,0,0,0.3);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
-  flex-direction: column; /* image puis texte */
+  flex-direction: column;
   align-items: center;
   text-align: center;
 }
@@ -172,26 +212,60 @@ body {
 }
 
 .container h1 {
-  font-size: 1.4rem;
-  margin-bottom: 1rem;
+  font-size: clamp(1.1rem, 1.4vw, 1.4rem);
+  margin: 0 0 .75rem 0;
   color: #fff;
 }
 
 .container p {
-  font-size: 1.1rem;
+  font-size: clamp(1rem, 1.1vw, 1.1rem);
   line-height: 1.6;
-  color: #ddd;
+  color: var(--text-dim);
+  max-width: 65ch;
+  margin: 0 auto;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
-.container.grand {
-  grid-column: 1 / -1; /* occupe de la 1ère à la dernière colonne */
+/* Grande carte */
+.container.grand { 
+  grid-column: 1 / -1;
 }
 
+/* Palier 2 colonnes (desktop large) */
+@media (min-width: 1200px) {
+  /* 2 colonnes fixes centrées pour éviter les rangées "boîte à gauche" */
+  .contenu { 
+    grid-template-columns: repeat(2, minmax(320px, 420px));
+    justify-content: center;
+  }
+  .container.grand { 
+    grid-column: span 2; 
+    justify-self: center;
+    max-width: 860px;
+  }
+
+  /* Si la DERNIÈRE carte est seule (nombre impair) et n'est pas .grand → la centrer */
+  .contenu > .container:last-child:nth-child(odd):not(.grand){
+    grid-column: 1 / -1;
+    justify-self: center;
+    max-width: 420px;
+  }
+}
+
+/* Palier 1 colonne (mobile) */
+@media (max-width: 780px) {
+  .contenu { grid-template-columns: 1fr; }
+}
+
+/* ================================
+   BACK TO TOP
+================================== */
 .back-to-top {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: rgba(106,13,173,0.9); /* ton violet */
+  background: rgba(106,13,173,0.9);
   color: #fff;
   padding: 0.6rem 0.8rem;
   border-radius: 50%;
@@ -205,30 +279,29 @@ body {
 }
 .back-to-top:hover {
   transform: scale(1.1);
-  background: #8a2be2;
+  background: var(--violet-2);
 }
-.back-to-top.show {
-  opacity: 1;
-  visibility: visible;
-}
+.back-to-top.show { opacity: 1; visibility: visible; }
 
+/* ================================
+   FOOTER
+================================== */
 .footer {
-  background: #111; /* fond sombre */
+  background: #111;
   color: #ccc;
   padding: 2rem 1rem 1rem;
   font-size: 0.95rem;
   width: 100%;
-  border-top: 3px solid #6a0dad;
-  box-shadow: 0 -2px 12px rgba(106, 13, 173, 0.7); /* glow */
+  border-top: 3px solid var(--violet);
+  box-shadow: 0 -2px 12px rgba(106, 13, 173, 0.7);
 }
 
 .footer-container {
-  margin: 0 auto;
+  margin: 0 auto 1.5rem;
   max-width: 1200px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 2rem;
-  margin-bottom: 1.5rem;
 }
 
 .footer-section h3 {
@@ -237,25 +310,15 @@ body {
   font-size: 1.1rem;
 }
 
-.footer-section ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-section ul li {
-  margin-bottom: 0.5rem;
-}
+.footer-section ul { list-style: none; padding: 0; margin: 0; }
+.footer-section ul li { margin-bottom: 0.5rem; }
 
 .footer-section a {
   color: #ccc;
   text-decoration: none;
   transition: color 0.3s;
 }
-
-.footer-section a:hover {
-  color: #6a0dad; /* violet thème */
-}
+.footer-section a:hover { color: var(--violet); }
 
 .footer-bottom {
   text-align: center;
@@ -265,12 +328,9 @@ body {
   color: #888;
 }
 
-@media (prefers-reduced-motion: reduce){
-  .slides { transition: none; }
-}
-
-/* Me retrouver */
-
+/* ================================
+   RESEAUX (Me retrouver)
+================================== */
 .reseaux {
   max-width: 1100px;
   margin: 3rem auto;
@@ -279,54 +339,39 @@ body {
   gap: 2rem;
   padding: 0 1rem;
 }
-
 .reseau-card {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: var(--card-bg);
+  border: 1px solid var(--card-bd);
   border-radius: 12px;
   padding: 2rem;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 .reseau-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 10px 25px rgba(106,13,173,0.7);
 }
-
 .reseau-card i {
   font-size: 2.5rem;
   margin-bottom: 1rem;
-  color: #6a0dad;
+  color: var(--violet);
 }
-
-.reseau-card h2 {
-  margin: 0.5rem 0;
-  color: #fff;
-}
-
-.reseau-card p {
-  font-size: 0.95rem;
-  color: #ddd;
-  margin-bottom: 1rem;
-}
-
+.reseau-card h2 { margin: 0.5rem 0; color: #fff; }
+.reseau-card p { font-size: 0.95rem; color: var(--text-dim); margin-bottom: 1rem; }
 .reseau-card a {
   display: inline-block;
   padding: 0.6rem 1rem;
-  background: #6a0dad;
+  background: var(--violet);
   color: #fff;
   border-radius: 6px;
   text-decoration: none;
   transition: background 0.3s, transform 0.2s;
 }
+.reseau-card a:hover { background: var(--violet-2); transform: scale(1.05); }
 
-.reseau-card a:hover {
-  background: #8a2be2;
-  transform: scale(1.05);
-}
-
-/* ===== AGENDA ===== */
+/* ================================
+   AGENDA
+================================== */
 .agenda{
   max-width: 1100px; margin: 3.5rem auto; padding: 0 1rem;
 }
@@ -339,8 +384,8 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 .event-card{
-  background: rgba(255,255,255,.05);
-  border: 1px solid rgba(255,255,255,.1);
+  background: var(--card-bg);
+  border: 1px solid var(--card-bd);
   border-radius: 12px; padding: 1rem 1.2rem;
   display: grid; gap:.55rem;
   box-shadow: 0 8px 20px rgba(0,0,0,.3);
@@ -359,15 +404,15 @@ body {
 }
 .event-actions{ margin-top:.4rem; display:flex; gap:.5rem; flex-wrap:wrap; }
 .event-actions a{
-  background:#6a0dad; color:#fff; text-decoration:none;
+  background:var(--violet); color:#fff; text-decoration:none;
   padding:.45rem .7rem; border-radius:8px; font-size:.9rem;
   transition: background .2s, transform .2s;
 }
-.event-actions a:hover{ background:#8a2be2; transform: translateY(-1px); }
+.event-actions a:hover{ background:var(--violet-2); transform: translateY(-1px); }
 
-/* PRESENTATION */
-
-/* --- Timeline --- */
+/* ================================
+   PRESENTATION (Timeline & Chips)
+================================== */
 .timeline{
   max-width: 900px;
   margin: 0 auto 2rem;
@@ -383,16 +428,15 @@ body {
 .t-dot{
   position:absolute; left:-1px; top:.35rem;
   width:12px; height:12px; border-radius:50%;
-  background:#6a0dad; box-shadow:0 0 10px rgba(106,13,173,.8);
+  background:var(--violet); box-shadow:0 0 10px rgba(106,13,173,.8);
 }
 .t-card{
-  background: rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.1);
+  background: var(--card-bg);
+  border:1px solid var(--card-bd);
   border-radius:12px; padding:1rem 1.2rem;
 }
 .t-card h3{ margin:.1rem 0 .4rem; color:#fff; }
 
-/* --- Chips (setup) --- */
 .chips{
   display:flex; flex-wrap:wrap; gap:.5rem; justify-content:center;
 }
@@ -404,26 +448,26 @@ body {
 }
 .chip i{ opacity:.9; }
 
-/* ============================= */
-/*         PAGE CONTACT          */
-/* ============================= */
-
+/* ================================
+   CONTACT
+================================== */
 .contact-section {
   max-width: 700px;
   margin: 4rem auto;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: var(--card-bg);
+  border: 1px solid var(--card-bd);
   border-radius: 16px;
   padding: 2rem 2.5rem;
   box-shadow: 0 8px 20px rgba(0,0,0,0.3);
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.8s ease;
+  opacity: 0;
+  transform: translateY(20px);
 }
-.contact-section:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(106,13,173,0.6);
+.contact-section.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
-
 .contact-intro {
   color: #ccc;
   line-height: 1.6;
@@ -431,25 +475,16 @@ body {
   margin-bottom: 2rem;
 }
 
-/* ----- FORMULAIRE ----- */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
+/* hover rétabli */
+.contact-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(106,13,173,0.6);
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-}
-
-.form-group label {
-  font-weight: bold;
-  color: #fff;
-  margin-bottom: 0.4rem;
-}
+/* Formulaire */
+form { display: flex; flex-direction: column; gap: 1.2rem; }
+.form-group { display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+.form-group label { font-weight: bold; color: #fff; margin-bottom: 0.4rem; }
 
 .form-group input,
 .form-group textarea {
@@ -463,17 +498,16 @@ form {
   font-size: 1rem;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
-
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #6a0dad;
+  border-color: var(--violet);
   box-shadow: 0 0 6px rgba(106,13,173,0.6);
 }
 
-/* ----- BOUTON ----- */
+/* Bouton */
 .btn-send {
-  background: linear-gradient(135deg, #6a0dad, #8a2be2);
+  background: linear-gradient(135deg, var(--violet), var(--violet-2));
   border: none;
   color: #fff;
   padding: 0.9rem 1.4rem;
@@ -489,16 +523,10 @@ form {
   gap: 0.5rem;
   box-shadow: 0 0 10px rgba(106,13,173,0.6);
 }
-.btn-send:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 18px rgba(138,43,226,0.9);
-}
-.btn-send:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+.btn-send:hover { transform: scale(1.05); box-shadow: 0 0 18px rgba(138,43,226,0.9); }
+.btn-send:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* ----- MESSAGE DE VALIDATION / ERREUR ----- */
+/* Message formulaire */
 .form-msg {
   margin-top: 1rem;
   font-size: 0.95rem;
@@ -506,15 +534,34 @@ form {
   min-height: 1.2em;
 }
 
-/* Apparition douce (option bonus du JS) */
-.contact-section {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
-.contact-section.visible {
-  opacity: 1;
-  transform: translateY(0);
+/* ================================
+   PETITS AJUSTEMENTS RESPONSIVE
+================================== */
+@media (max-width: 520px) {
+  .navbar { padding: .75rem; }
+  .navbar ul li { font-size: 18px; }
 }
 
+/* FOOTER — centrage sur mobile */
+@media (max-width: 780px){
+  .footer-container{ 
+    text-align: center; 
+  }
+  .footer-section ul{
+    padding-left: 0;
+  }
+  .footer-section a{
+    display: inline-block;
+  }
+  .footer-bottom{
+    text-align: center;
+  }
+}
 
+/* NAVBAR — centrage quand ça wrappe (petits/moyens écrans) */
+@media (max-width: 900px){
+  .navbar ul{ justify-content: center; gap: 1rem; }
+}
+@media (min-width: 901px){
+  .navbar ul{ justify-content: space-between; }
+}
