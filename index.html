@@ -33,15 +33,32 @@
       <button class="prev" aria-label="Précédent">❮</button>
 
       <div class="slides">
-        <div class="slide"><img src="img/image1.jpg" alt="Visuel 1"></div>
-        <div class="slide"><img src="img/image2.jpg" alt="Visuel 2"></div>
-        <div class="slide"><img src="img/image3.jpg" alt="Visuel 3"></div>
+        <div class="slide">
+          <div class="slide-title">Introduction</div>
+          <video src="vid/self_presentation.mp4" controls></video>
+        </div>
+        <div class="slide">
+          <div class="slide-title">Le Setup</div>
+          <img src="img/setup.png" alt="Le Setup de SELF DJ">
+        </div>
+        <div class="slide">
+          <div class="slide-title">Le logo Officiel</div>
+          <img src="img/self.png" alt="Le logo Officiel de SELF DJ">
+        </div>
       </div>
 
       <button class="next" aria-label="Suivant">❯</button>
 
       <!-- Indicateurs / Dots -->
       <div class="carousel-dots" aria-label="Navigation carrousel"></div>
+      <!-- Toggle auto-rotation -->
+      <div class="carousel-controls">
+        <label class="auto-toggle">
+          <input type="checkbox" id="carousel-auto-toggle">
+          <i id="carousel-auto-icon" class="fas fa-play" aria-hidden="true"></i>
+          <span class="sr-only">Activer la rotation automatique du carrousel</span>
+        </label>
+      </div>
     </div>
   </main>
   <div class="contenu">
@@ -85,7 +102,6 @@
       <ul>
         <li><a href="https://www.instagram.com/self._dj/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></li>
         <li><a href="https://soundcloud.com/self_dj" target="_blank"><i class="fab fa-soundcloud"></i> SoundCloud</a></li>
-        <li><a href="#" target="_blank"><i class="fab fa-youtube"></i> YouTube</a></li>
       </ul>
     </div>
 
@@ -101,13 +117,6 @@
     <p>&copy; 2025 SELF DJ – Tous droits réservés.</p>
   </div>
 </footer>
-
-
-
-
-
-
-
     <a href="#top" class="back-to-top" aria-label="Revenir en haut">
       <i class="fas fa-arrow-up"></i>
     </a>

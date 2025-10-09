@@ -56,23 +56,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let index = 0;
     let autoTimer = null;
 
-    // Dots
+    // Dots are disabled per user request (hidden via CSS); we keep a no-op array
     const dots = [];
-    if (dotsWrap) {
-      slideEls.forEach((_, i) => {
-        const dot = document.createElement("button");
-        dot.className = "dot";
-        dot.type = "button";
-        dot.dataset.index = i;
-        dot.addEventListener("click", () => {
-          showSlide(i);
-          stopAuto();
-        });
-        dotsWrap.appendChild(dot);
-        dots.push(dot);
-      });
-    }
-    const updateDots = i => dots.forEach((d, k) => d.classList.toggle("active", k === i));
+    const updateDots = i => { /* no-op: dots removed */ };
 
     // Affichage
     function showSlide(i) {
@@ -81,9 +67,14 @@ document.addEventListener("DOMContentLoaded", () => {
       updateDots(index);
     }
 
-    // Auto
+    // Auto-rotation (can be enabled via toggle, persisted in localStorage)
+    const AUTO_KEY = 'carouselAutoEnabled';
+    let autoEnabled = true;
+    try { const saved = localStorage.getItem(AUTO_KEY); if (saved !== null) autoEnabled = saved === '1'; } catch(e){}
+
     function startAuto() {
       stopAuto();
+      if (!autoEnabled) return;
       autoTimer = setInterval(() => showSlide(index + 1), 5000);
     }
     function stopAuto() {
@@ -91,14 +82,85 @@ document.addEventListener("DOMContentLoaded", () => {
       autoTimer = null;
     }
 
-    // Flèches
-    nextBtn?.addEventListener("click", () => { showSlide(index + 1); stopAuto(); });
-    prevBtn?.addEventListener("click", () => { showSlide(index - 1); stopAuto(); });
+    // Setup UI toggle if present
+    const autoToggle = document.getElementById('carousel-auto-toggle');
+    const autoIcon = document.getElementById('carousel-auto-icon');
+    function refreshAutoIcon() {
+      if (!autoIcon) return;
+      if (autoEnabled) {
+        autoIcon.classList.remove('fa-play');
+        autoIcon.classList.add('fa-pause');
+      } else {
+        autoIcon.classList.remove('fa-pause');
+        autoIcon.classList.add('fa-play');
+      }
+    }
 
-    // Pause au survol
+    if (autoToggle) {
+      autoToggle.checked = !!autoEnabled;
+      refreshAutoIcon();
+      autoToggle.addEventListener('change', (e) => {
+        autoEnabled = !!e.target.checked;
+        try { localStorage.setItem(AUTO_KEY, autoEnabled ? '1' : '0'); } catch(err){}
+        refreshAutoIcon();
+        if (autoEnabled) startAuto(); else stopAuto();
+      });
+    }
+
+    // Pause auto-advance when any video is playing
+    const videos = Array.from(slideEls).map(s => s.querySelector('video')).filter(Boolean);
+    videos.forEach(v => {
+      v.addEventListener('play', () => {
+        stopAuto();
+      });
+      v.addEventListener('pause', () => {
+        // resume auto after a short delay so user can watch
+        setTimeout(() => { if (!videos.some(x=> !x.paused)) startAuto(); }, 1500);
+      });
+      v.addEventListener('ended', () => { startAuto(); });
+    });
+
+  // Flèches — handlers replaced later with safe versions that pause videos
+
+    // Pause au survol (respecte autoEnabled)
     const carousel = document.querySelector(".carousel");
-    carousel?.addEventListener("mouseenter", stopAuto);
-    carousel?.addEventListener("mouseleave", startAuto);
+    carousel?.addEventListener("mouseenter", () => { if (autoEnabled) stopAuto(); });
+    carousel?.addEventListener("mouseleave", () => { if (autoEnabled) startAuto(); });
+
+    // Touch / swipe support (left/right)
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const minSwipe = 40; // px
+    carousel?.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    carousel?.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const diff = touchEndX - touchStartX;
+      if (Math.abs(diff) > minSwipe) {
+        if (diff < 0) { // swipe left -> next
+          showSlideSafe(index + 1);
+        } else { // swipe right -> prev
+          showSlideSafe(index - 1);
+        }
+      }
+    }, { passive: true });
+
+    // Init
+    // When changing slide, pause any playing videos and center media
+    function pauseAllVideos() {
+      videos.forEach(v => { try { v.pause(); v.currentTime = v.currentTime; } catch(e){} });
+    }
+
+    // Ensure to pause videos when navigating slides
+    function showSlideSafe(i) {
+      pauseAllVideos();
+      showSlide(i);
+    }
+
+    // Replace handlers to use showSlideSafe where appropriate
+    nextBtn?.addEventListener('click', () => { showSlideSafe(index + 1); stopAuto(); });
+    prevBtn?.addEventListener('click', () => { showSlideSafe(index - 1); stopAuto(); });
 
     // Init
     showSlide(0);
