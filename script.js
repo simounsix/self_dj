@@ -245,10 +245,10 @@ document.addEventListener("DOMContentLoaded", () => {
           ${end ? " – " + end.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : ""}
         </div>
         <div class="event-actions">
-          <a href="${googleLink(ev)}" target="_blank" rel="noopener">Ajouter à Google</a>
+          <a href="${googleLink(ev)}" target="_blank" rel="noopener noreferrer">Ajouter à Google</a>
           <a href="${buildICS(ev)}" download="event-selfdj.ics">Télécharger .ics</a>
-          <a href="https://www.google.com/maps/search/${encodeURIComponent(ev.venue)}" target="_blank" rel="noopener">Itinéraire</a>
-          ${ev.tickets ? `<a href="${ev.tickets}" target="_blank" rel="noopener">Billetterie</a>` : ""}
+          <a href="https://www.google.com/maps/search/${encodeURIComponent(ev.venue)}" target="_blank" rel="noopener noreferrer">Itinéraire</a>
+          ${ev.tickets ? `<a href="${ev.tickets}" target="_blank" rel="noopener noreferrer">Billetterie</a>` : ""}
         </div>
       `;
       root.appendChild(card);

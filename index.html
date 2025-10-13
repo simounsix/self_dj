@@ -7,6 +7,8 @@
   <title>SELF DJ</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="preload" href="img/setup.webp" as="image">
+  <link rel="preload" href="fonts/tilt-neon/TiltNeon-Regular-VariableFont_XROT,YROT.ttf" as="font" type="font/ttf" crossorigin>
   <!-- Favicons -->
   <link rel="icon" href="img/self-mini.ico" sizes="96x96" type="image/x-icon" />
   <link rel="icon" href="img/self-mini.png" type="image/png" />
@@ -63,15 +65,21 @@
       <div class="slides">
         <div class="slide">
           <div class="slide-title">Introduction</div>
-          <video src="vid/self_presentation.mp4" controls></video>
+          <video src="vid/self_presentation.mp4" controls playsinline preload="metadata" poster="img/self-mini.png"></video>
         </div>
         <div class="slide">
           <div class="slide-title">Le Setup</div>
-          <img src="img/setup.png" alt="Le Setup de SELF DJ">
+          <picture>
+            <source type="image/webp" srcset="img/setup.webp">
+            <img src="img/setup.png" alt="Le Setup de SELF DJ" loading="lazy" width="460" height="460" style="aspect-ratio:1/1;">
+          </picture>
         </div>
         <div class="slide">
           <div class="slide-title">Le logo Officiel</div>
-          <img src="img/self.png" alt="Le logo Officiel de SELF DJ">
+          <picture>
+            <source type="image/webp" srcset="img/self.webp">
+            <img src="img/self.png" alt="Le logo Officiel de SELF DJ" loading="lazy" width="460" height="460" style="aspect-ratio:1/1;">
+          </picture>
         </div>
       </div>
 
@@ -125,8 +133,8 @@
     <div class="footer-section">
       <h3>Réseaux</h3>
       <ul>
-        <li><a href="https://www.instagram.com/self._dj/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></li>
-        <li><a href="https://soundcloud.com/self_dj" target="_blank"><i class="fab fa-soundcloud"></i> SoundCloud</a></li>
+  <li><a href="https://www.instagram.com/self._dj/" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i> Instagram</a></li>
+  <li><a href="https://soundcloud.com/self_dj" target="_blank" rel="noopener noreferrer"><i class="fab fa-soundcloud"></i> SoundCloud</a></li>
       </ul>
     </div>
 
